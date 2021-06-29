@@ -37,6 +37,10 @@ class DiaryRepository(application: Application) {
         return diaryDao.getDiary(date)
     }
 
+    fun updateDiary(content:String, date: String){
+        diaryDao.updateDiary(content, date)
+    }
+
     fun insertDiary(diary: Diary){
         diaryDao.insertDiary(diary)
     }

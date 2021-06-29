@@ -1,10 +1,7 @@
 package com.nand.myary.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.nand.myary.data.db.entity.Diary
 
 @Dao
@@ -27,6 +24,9 @@ interface DiaryDao {
 
     @Insert
     fun insertDiary(diary: Diary)
+
+    @Query("UPDATE diary SET content=:content WHERE date=:date")
+    fun updateDiary(content: String, date: String)
 
     @Delete
     fun delete(diary: Diary)

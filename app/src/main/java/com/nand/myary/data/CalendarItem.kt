@@ -7,6 +7,6 @@ data class CalendarItem(
     val month: Int,
     val day: Int = 0,
     val week: Int = 0,
-    val content: String?,
-    val date: String?
+    var content: String?,
+    var date: String?
     ): Serializable

@@ -12,6 +12,7 @@
         android:textAlignment="center"
         android:layout_gravity="center"
         android:text="1"
+        android:fontFamily="@font/notosans_medium"
         android:background="@drawable/date_round"
         android:textColor="#000000"
         android:textSize="11sp"

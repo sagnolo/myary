@@ -38,6 +38,10 @@ class DiaryViewModel(application: Application): AndroidViewModel(application) {
         repository.insertDiary(diary)
     }
 
+    fun update(content:String, date: String){
+        repository.updateDiary(content, date)
+    }
+
     fun delete(date: String){
         repository.deleteDiary(date)
     }

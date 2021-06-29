@@ -9,7 +9,7 @@ import com.nand.myary.data.db.converter.Converters
 import com.nand.myary.data.db.entity.Diary
 import com.nand.myary.data.db.dao.DiaryDao
 
-@Database(entities = arrayOf(Diary::class), version = 5)
+@Database(entities = arrayOf(Diary::class), version = 7)
 @TypeConverters(Converters::class)
 abstract class DiaryDatabase: RoomDatabase() {
     abstract fun diaryDao(): DiaryDao
@@ -25,7 +25,7 @@ abstract class DiaryDatabase: RoomDatabase() {
                     DiaryDatabase::class.java,
                     "diary.db"
                 )
-//                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
