@@ -16,7 +16,7 @@ interface DiaryDao {
     @Query("SELECT * FROM diary")
     fun getAll(): LiveData<List<Diary>>
 
-    @Query("SELECT * FROM diary")
+    @Query("SELECT * FROM diary ORDER BY date ASC")
     fun getAlls(): List<Diary>
 
     @Query("SELECT * FROM diary WHERE date=:date")

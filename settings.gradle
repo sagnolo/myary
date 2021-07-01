@@ -1,2 +1,3 @@
 rootProject.name = "myary"
 include ':app'
+include ':nativetemplates'

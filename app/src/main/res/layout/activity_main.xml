@@ -9,88 +9,121 @@
     android:background="#fff">
 
     <LinearLayout
-        android:id="@+id/layout_diary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:visibility="gone">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/layout_diary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/txt_main_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22dp"
+                    android:text="2021년 06월 23일"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/notosans_bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/btn_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수정"
+                    android:drawableTop="@drawable/modify"
+                    android:drawablePadding="3dp"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/notosans_medium"
+                    app:layout_constraintRight_toLeftOf="@id/btn_delete"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginRight="10dp"/>
+
+                <TextView
+                    android:id="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_medium"
+                    android:drawableTop="@drawable/delete"
+                    android:drawablePadding="3dp"
+                    android:textAlignment="center"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_list"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginRight="10dp"
+                    android:text="삭제"/>
+
+                <TextView
+                    android:id="@+id/btn_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="리스트"
+                    android:fontFamily="@font/notosans_medium"
+                    android:drawableTop="@drawable/list"
+                    android:textAlignment="center"
+                    android:drawablePadding="3dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/txt_main_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="22dp"
-                android:text="2021년 06월 23일"
-                android:layout_marginRight="20dp"
-                android:fontFamily="@font/notosans_bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <Button
-                android:id="@+id/btn_modify"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="수정"
+                android:id="@+id/txt_diary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/notosans_medium"
-                app:layout_constraintRight_toLeftOf="@id/btn_delete"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="10dp"/>
+                android:background="@drawable/write_line"
+                android:gravity="top"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:scrollbars="vertical"/>
 
-            <Button
-                android:id="@+id/btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/notosans_medium"
-                app:layout_constraintRight_toLeftOf="@+id/btn_view"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="10dp"
-                android:text="삭제"/>
-            
-            <Button
-                android:id="@+id/btn_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="보기"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/txt_diary"
+        <LinearLayout
+            android:id="@+id/layout_start"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/notosans_medium"
-            android:background="@drawable/write_line"
-            android:gravity="top"
-            android:padding="10dp"
-            android:layout_margin="10dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_medium"
+                android:textSize="22dp"
+                android:text="일기 작성하기"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_start"
-            android:layout_width="wrap_content"
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="일기 작성하기"/>
+            android:layout_gravity="bottom"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/google_ads_bottom_banner_id"/>
 
     </LinearLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
@@ -100,15 +133,16 @@
         android:fitsSystemWindows="true"
         android:background="#fff">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_cal_hedaer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:gravity="center">
 
@@ -140,6 +174,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_cal_week"
+                android:layout_below="@+id/layout_cal_hedaer"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:background="#eaeae9"
@@ -219,13 +255,22 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_calendar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_cal_week"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="7"
                 tools:itemCount="28"
                 tools:listitem="@layout/item_calendar" />
 
-        </LinearLayout>
+            <com.google.android.ads.nativetemplates.TemplateView
+                android:id="@+id/adTemplate"
+                app:gnt_template_type="@layout/gnt_small_template_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" />
+
+
+        </RelativeLayout>
 
     </com.google.android.material.navigation.NavigationView>
 

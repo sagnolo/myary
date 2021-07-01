@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">myary</string>
+    <string name="app_name">나의 다이어리</string>
+
+    <string name="google_ads_app_id" translatable="false">ca-app-pub-5598928822468239~8198132919</string>
+    <string name="google_ads_bottom_banner_id" translatable="false">ca-app-pub-5598928822468239/6759846597</string>
+    <string name="google_ads_interstitial_id" translatable="false">ca-app-pub-5598928822468239/5446764921</string>
+    <string name="google_ads_native_id" translatable="false">ca-app-pub-5598928822468239/6376896737</string>
+
+    <string name="google_ads_bottom_banner_test_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="google_ads_interstitial_test_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="google_ads_native_test_id" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
 
 </resources>

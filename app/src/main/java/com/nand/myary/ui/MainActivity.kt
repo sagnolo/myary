@@ -3,11 +3,13 @@ package com.nand.myary.ui
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Handler
+import android.text.method.ScrollingMovementMethod
+import android.view.*
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,25 +19,32 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.initialization.InitializationStatus
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
+import com.google.android.gms.ads.nativead.NativeAd
+import com.nand.myary.R
 import com.nand.myary.data.CalendarItem
 import com.nand.myary.data.db.entity.Diary
 import com.nand.myary.viewmodel.DiaryViewModel
-import com.nand.myary.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_calendar.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+
 
 class MainActivity : AppCompatActivity() {
 
     private var year = 0
     private var month = 0
     private var day = 0
+    lateinit var dialog: AlertDialog
+    lateinit var nativeAd: TemplateView
     private lateinit var diaryViewModel: DiaryViewModel
     private var calendarAdapter = CalendarAdapter()
     private var diaryMap = HashMap<String, Diary>()
@@ -50,10 +59,11 @@ class MainActivity : AppCompatActivity() {
                 nowCalendarItem = calendarItem
                 txt_diary.setText(calendarItem.content)
                 txt_main_date.setText("${calendarItem.year}년 ${calendarItem.month}월 ${calendarItem.day}일")
-                btn_start.visibility = View.GONE
+                layout_start.visibility = View.GONE
                 layout_diary.visibility = View.VISIBLE
                 nowDate = calendarItem.date!!
                 day = calendarItem.day
+                loadDate(nowCalendarItem!!.year, nowCalendarItem!!.month-1)
             }
         }
     )
@@ -61,6 +71,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        MobileAds.initialize(this, object: OnInitializationCompleteListener{
+            override fun onInitializationComplete(p0: InitializationStatus) {
+            }
+        })
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+
+        var adLoader = AdLoader.Builder(this, getString(R.string.google_ads_native_id))
+            .forNativeAd(object: NativeAd.OnNativeAdLoadedListener{
+                override fun onNativeAdLoaded(nativeAd: NativeAd) {
+                    adTemplate.setNativeAd(nativeAd)
+                }
+            })
+            .build()
+        adLoader.loadAd(adRequest)
 
         val layoutManager = object : GridLayoutManager(applicationContext, 7) {
             override fun canScrollVertically(): Boolean { return false }
@@ -82,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     txt_main_date.setText("${items[i].year}년 ${items[i].month}월 ${items[i].day}일")
                     nowDate = items[i].date!!
                     nowCalendarItem = items[i]
-                    btn_start.visibility = View.GONE
+                    layout_start.visibility = View.GONE
                     layout_diary.visibility = View.VISIBLE
                 }
                 drawerLayout.closeDrawers()
@@ -118,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                         CoroutineScope(Dispatchers.IO).launch {
                             diaryViewModel.delete(nowDate)
                             CoroutineScope(Dispatchers.Main).launch {
-                                btn_start.visibility = View.VISIBLE
+                                layout_start.visibility = View.VISIBLE
                                 layout_diary.visibility = View.GONE
                             }
                         }
@@ -132,6 +157,8 @@ class MainActivity : AppCompatActivity() {
         btn_start.setOnClickListener {
             drawerLayout.openDrawer(Gravity.LEFT)
         }
+
+        txt_diary.movementMethod = ScrollingMovementMethod()
 
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
@@ -149,10 +176,44 @@ class MainActivity : AppCompatActivity() {
             loadDate(this.year, this.month)
         })
 
-        btn_view.setOnClickListener {
+        btn_list.setOnClickListener {
             var intent = Intent(applicationContext, DiarysActivity::class.java)
-            startActivity(intent)
+            startActivityResult.launch(intent)
         }
+
+        setDialogad()
+    }
+
+    fun setDialogad(){
+        val view = View.inflate(this@MainActivity, R.layout.dialog_exit, null)
+        val txtExit = view.findViewById<TextView>(R.id.txt_exit)
+        nativeAd = view.findViewById<TemplateView>(R.id.ad_template)
+        val adRequest = AdRequest.Builder().build()
+        CoroutineScope(Dispatchers.Main).launch {
+            var adLoader = AdLoader.Builder(applicationContext, getString(R.string.google_ads_native_id))
+                .forNativeAd(object: NativeAd.OnNativeAdLoadedListener{
+                    override fun onNativeAdLoaded(nAd: NativeAd) {
+                        nativeAd.setNativeAd(nAd)
+                    }
+                })
+                .build()
+            adLoader.loadAd(adRequest)
+        }
+        txtExit.setOnClickListener {
+            finish()
+        }
+        dialog = AlertDialog.Builder(this@MainActivity).setView(view).create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.setOnKeyListener { dialog, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss()
+                finish()
+                true
+            }
+            false
+        }
+
     }
 
     fun loadDate(yearValue: Int, monthValue: Int){
@@ -231,8 +292,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        interface OnItemClickListener {
-            fun onItemClick(adapter: RecyclerView.Adapter<*>, position: Int)
+
+    }
+
+    override fun onBackPressed() {
+        if(!dialog.isShowing){
+            dialog.show()
         }
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClick(adapter: RecyclerView.Adapter<*>, position: Int)
 }
